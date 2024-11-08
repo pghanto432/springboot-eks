@@ -2,6 +2,13 @@
 
 <h1>SpringBoot Application on AWS EKS using ECR</h1>
 
+# Pre-requisites:
+* AWS Account
+* AWS CLI
+* EKSCTL
+* Kubectl
+* Docker
+
 
 <h2>
 <p style="font-size:16px; color:red;">
@@ -53,8 +60,53 @@ to see how to push the local Docker image in to the AWS ECR repository
 <p style="font-size:16px; color:red;">
 # STEP-7: Push the Docker image to the AWS ECR via AWS-CLI
 </p></h2>
+
 * aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
+
 * docker tag springboot-eks:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/springboot-eks:latest
+
 * docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/springboot-eks:latest
+
+<h2>
+<p style="font-size:16px; color:red;">
+# STEP-8: Create  the EKS CLuster via eksctl in AWS using below command and update the kubeconfig via second command
+</p></h2>
+
+* eksctl create cluster --name prado-cluster --version 1.30.2 --nodes=1 --node-type=t2.small --region ap-south-1
+
+* aws eks --region ap-south-1 update-kubeconfig --name prado-cluster
+
+
+<h2>
+<p style="font-size:16px; color:red;">
+# STEP-9: Create the K8s yaml in ur application as below and have the configuration for the deployment & service
+</p></h2>
+
+![img_3.png](img_3.png)
+
+* kubectl apply -f k8s.yaml
+
+<h2>
+<p style="font-size:16px; color:red;">
+# STEP-10: Verify the deployments & service via the below commands
+</p></h2>
+
+* kubectl get svc
+* kubectl get deployments
+* kubectl get pods
+* kubectl describe pod <podname>
+
+![img_4.png](img_4.png)
+
+
+<h2>
+<p style="font-size:16px; color:red;">
+# STEP-10: Verify the application end-point by accessing the below URL in the browser
+</p></h2>
+
+* http://<LoadBalancer-URL>/greetings
+* http://a78bc115f6ead4ae2829ff15df119356-1060865414.ap-south-1.elb.amazonaws.com/greetings
+![img_5.png](img_5.png)
+![img_6.png](img_6.png)
 
 </div>
