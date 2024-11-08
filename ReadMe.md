@@ -54,9 +54,7 @@ to see how to push the local Docker image in to the AWS ECR repository
 # STEP-7: Push the Docker image to the AWS ECR via AWS-CLI
 </p></h2>
 * aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
-
 * docker tag springboot-eks:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/springboot-eks:latest
-
 * docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/springboot-eks:latest
 
 </div>
