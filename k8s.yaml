@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-eks-deployment
+  labels:
+    app: springboot-eks
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springboot-eks
+  template:
+    metadata:
+      labels:
+        app: springboot-eks
+    spec:
+      containers:
+      - name: springboot-eks
+        image: 273354623400.dkr.ecr.ap-south-1.amazonaws.com/springboot-eks@sha256:2948616fec3cb46ad72f7bdc9135af5ed6fa86dfdca614c1b788e9c811d8684b
+        ports:
+        - containerPort: 8080
+        command: ["java", "-jar", "springboot-eks.jar"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-eks-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: springboot-eks
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
